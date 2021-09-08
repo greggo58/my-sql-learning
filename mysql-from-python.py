@@ -17,12 +17,11 @@ connection = pymysql.connect(**conn_params)
 
 try:
     # Run a query
-    with connection.cursor() as cursor:
-        sql = ("SELECT * FROM Artist LIMIT 10;")
+    with connection.cursor(pymysql.cursors.DictCursor) as cursor:
+        sql = ("SELECT * FROM Genre")
         cursor.execute(sql)
-        results = cursor.fetchall()
-        for result in results:
-            print(result)
+        for row in cursor:
+            print(row)
 finally:
     # Close the connection, regardless of whether the the above was successful
     connection.close()
