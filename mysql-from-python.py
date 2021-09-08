@@ -1,4 +1,5 @@
 import os
+# import datetime
 import pymysql
 
 # Get username from workspace
@@ -17,11 +18,13 @@ connection = pymysql.connect(**conn_params)
 
 try:
     # Run a query
-    with connection.cursor(pymysql.cursors.DictCursor) as cursor:
-        sql = ("SELECT * FROM Genre")
-        cursor.execute(sql)
-        for row in cursor:
-            print(row)
+    with connection.cursor() as cursor:
+        rows = [("Dave", 22, "1999-02-06 23:04:56"),
+                ("Jim", 11, "2010-02-06 23:04:56"),
+                ("Gerald", 45, "1976-02-06 23:04:56"),
+                ("Fred", 67, "1954-02-06 23:04:56")]
+        cursor.executemany("INSERT INTO Friends VALUES (%s, %s, %s);", rows)
+        connection.commit()
 finally:
     # Close the connection, regardless of whether the the above was successful
     connection.close()
